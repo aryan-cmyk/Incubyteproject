@@ -7,10 +7,10 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import main.java.com.example.sweetshop.dto.CreateSweetRequest;
-import main.java.com.example.sweetshop.dto.SweetDto;
-import main.java.com.example.sweetshop.dto.UpdateSweetRequest;
-import main.java.com.example.sweetshop.service.SweetService;
+import com.example.sweetshop.dto.CreateSweetRequest;
+import com.example.sweetshop.dto.SweetDto;
+import com.example.sweetshop.dto.UpdateSweetRequest;
+import com.example.sweetshop.service.SweetService;
 
 @RestController
 @RequestMapping("/api/sweets")

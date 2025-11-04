@@ -10,7 +10,7 @@ import java.util.UUID;
 import javax.crypto.SecretKey;
 
 @Component
-public class JwtUtil {
+public class JwtUtil{
   private final SecretKey key;
   private final long expirationMs;
 

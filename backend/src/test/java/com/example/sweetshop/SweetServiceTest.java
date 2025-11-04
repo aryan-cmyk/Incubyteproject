@@ -1,4 +1,4 @@
-package test.java.com.example.sweetshop;
+package com.example.sweetshop;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,38 +9,52 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import main.java.com.example.sweetshop.entity.Sweet;
-import main.java.com.example.sweetshop.exception.BadRequestException;
-import main.java.com.example.sweetshop.repository.SweetRepository;
-import main.java.com.example.sweetshop.service.SweetService;
+import com.example.sweetshop.entity.Sweet;
+import com.example.sweetshop.exception.BadRequestException;
+import com.example.sweetshop.repository.SweetRepository;
+import com.example.sweetshop.service.SweetService;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 class SweetServiceTest {
 
-  @Autowired SweetService sweetService;
-  @Autowired SweetRepository sweetRepository;
+    @Autowired
+    private SweetService sweetService;
 
-  @BeforeEach
-  void setup() { sweetRepository.deleteAll(); }
+    @Autowired
+    private SweetRepository sweetRepository;
 
-  @Test
-  void purchase_decrementsQuantity() {
-    Sweet s = new Sweet();
-    s.setName("Ladoo"); s.setCategory("Indian"); s.setPrice(BigDecimal.valueOf(20)); s.setQuantity(2);
-    s = sweetRepository.save(s);
+    @BeforeEach
+    void setup() {
+        sweetRepository.deleteAll();
+    }
 
-    sweetService.purchase(s.getId());
+    @Test
+    void purchase_decrementsQuantity() {
+        Sweet s = new Sweet();
+        s.setName("Ladoo");
+        s.setCategory("Indian");
+        s.setPrice(BigDecimal.valueOf(20));
+        s.setQuantity(2);
 
-    Sweet after = sweetRepository.findById(s.getId()).get();
-    assertEquals(1, after.getQuantity());
-  }
+        Sweet savedSweet = sweetRepository.save(s);
 
-  @Test
-  void purchase_whenZero_throws() {
-    Sweet s = new Sweet();
-    s.setName("Barfi"); s.setCategory("Indian"); s.setPrice(BigDecimal.valueOf(10)); s.setQuantity(0);
-    s = sweetRepository.save(s);
+        sweetService.purchase(savedSweet.getId());
 
-    assertThrows(BadRequestException.class, () -> sweetService.purchase(s.getId()));
-  }
+        Sweet after = sweetRepository.findById(savedSweet.getId()).orElseThrow();
+        assertEquals(1, after.getQuantity());
+    }
+
+    @Test
+    void purchase_whenZero_throws() {
+        Sweet s = new Sweet();
+        s.setName("Barfi");
+        s.setCategory("Indian");
+        s.setPrice(BigDecimal.valueOf(10));
+        s.setQuantity(0);
+
+        Sweet savedSweet = sweetRepository.save(s);
+
+        assertThrows(BadRequestException.class,
+                () -> sweetService.purchase(savedSweet.getId()));
+    }
 }

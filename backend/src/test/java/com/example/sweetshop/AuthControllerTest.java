@@ -1,4 +1,4 @@
-package test.java.com.example.sweetshop;
+package com.example.sweetshop;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import main.java.com.example.sweetshop.repository.UserRepository;
+import com.example.sweetshop.repository.UserRepository;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
